@@ -1,0 +1,8 @@
+<resources>
+<string name="app_name">My Application</string>
+<string-array name="phone_types">
+    <item>Смартфон</item>
+    <item>Кнопковий</item>
+    <item>Розкладний</item>
+</string-array>
+</resources>

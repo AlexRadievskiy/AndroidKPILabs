@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <Spinner
+        android:id="@+id/spinnerPhoneTypes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupBrands"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/radioButtonSamsung"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Samsung" />
+
+        <RadioButton
+            android:id="@+id/radioButtonApple"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Apple" />
+
+        <!-- Добавьте другие RadioButton по необходимости -->
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/buttonOk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ОК" />
+
+    <TextView
+        android:id="@+id/textViewResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
