@@ -1,8 +1,13 @@
 <resources>
-<string name="app_name">My Application</string>
-<string-array name="phone_types">
-    <item>Смартфон</item>
-    <item>Кнопковий</item>
-    <item>Розкладний</item>
-</string-array>
+    <string name="app_name">My Application</string>
+    <string-array name="phone_types">
+        <item>Смартфон</item>
+        <item>Кнопковий</item>
+        <item>Розкладний</item>
+    </string-array>
+    <string name="no_data">Дані відсутні</string>
+    <string name="no_data_available">Немає доступних даних</string>
+    <string name="delete_all_data">Видалити всі дані</string>
+    <string name="select_brand">Будь ласка, виберіть бренд</string>
+    <string name="select_file">Виберіть файл</string>
 </resources>

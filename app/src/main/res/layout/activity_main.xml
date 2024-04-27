@@ -6,40 +6,46 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <Spinner
-        android:id="@+id/spinnerPhoneTypes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <RadioGroup
-        android:id="@+id/radioGroupBrands"
+    <Button
+        android:id="@+id/btnPlay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <RadioButton
-            android:id="@+id/radioButtonSamsung"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Samsung" />
-
-        <RadioButton
-            android:id="@+id/radioButtonApple"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Apple" />
-
-        <!-- Добавьте другие RadioButton по необходимости -->
-    </RadioGroup>
+        android:text="Play"/>
 
     <Button
-        android:id="@+id/buttonOk"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnPause"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ОК" />
+        android:text="Pause"/>
+
+    <Button
+        android:id="@+id/btnStop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Stop"/>
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Back to File Chooser"/>
+
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
     <TextView
-        android:id="@+id/textViewResult"
+        android:id="@+id/textViewPlaceholder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="select_file"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:padding="16dp"
+     />
+
+
 </LinearLayout>
+
