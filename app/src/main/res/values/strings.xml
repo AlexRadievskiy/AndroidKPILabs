@@ -10,4 +10,6 @@
     <string name="delete_all_data">Видалити всі дані</string>
     <string name="select_brand">Будь ласка, виберіть бренд</string>
     <string name="select_file">Виберіть файл</string>
+    <string name="gyroscope_data_format">Gyroscope Data:\nX: %1$.3f\nY: %2$.3f\nZ: %3$.3f</string>
+    <string name="compass">Compass Image</string>
 </resources>

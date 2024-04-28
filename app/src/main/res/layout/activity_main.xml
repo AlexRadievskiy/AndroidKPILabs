@@ -1,51 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp">
 
-    <Button
-        android:id="@+id/btnPlay"
+    <ImageView
+        android:id="@+id/compass_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Play"/>
+        android:layout_height="match_parent"
+        android:contentDescription="@string/compass"
+        android:scaleType="centerInside"
+        android:src="@drawable/compass_image">
 
-    <Button
-        android:id="@+id/btnPause"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Pause"/>
+    </ImageView>
 
-    <Button
-        android:id="@+id/btnStop"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Stop"/>
-
-    <Button
-        android:id="@+id/btnBack"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Back to File Chooser"/>
-
-    <VideoView
-        android:id="@+id/videoView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
-
-    <TextView
-        android:id="@+id/textViewPlaceholder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="select_file"
-        android:gravity="center"
-        android:textSize="18sp"
-        android:padding="16dp"
-     />
-
-
-</LinearLayout>
-
+</RelativeLayout>

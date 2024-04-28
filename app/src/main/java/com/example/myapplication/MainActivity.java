@@ -1,108 +1,81 @@
 package com.example.myapplication;
 
-import android.content.Intent;
-import android.media.MediaPlayer;
-import android.net.Uri;
+import android.app.Activity;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.MediaController;
-import android.widget.TextView;
-import android.widget.VideoView;
-import androidx.appcompat.app.AppCompatActivity;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 
-public class MainActivity extends AppCompatActivity {
-    private VideoView videoView;
-    private MediaPlayer mediaPlayer;
+public class MainActivity extends Activity implements SensorEventListener {
+    private ImageView compassImage;
+    private float currentDegree = 0f;
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
+    private Sensor magnetometer;
+    private float[] lastAccelerometer = new float[3];
+    private float[] lastMagnetometer = new float[3];
+    private boolean lastAccelerometerSet = false;
+    private boolean lastMagnetometerSet = false;
+    private float[] r = new float[9];
+    private float[] orientation = new float[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        videoView = findViewById(R.id.videoView);
-        TextView textViewPlaceholder = findViewById(R.id.textViewPlaceholder);
-        Button btnPlay = findViewById(R.id.btnPlay);
-        Button btnPause = findViewById(R.id.btnPause);
-        Button btnStop = findViewById(R.id.btnStop);
-        Button btnBack = findViewById(R.id.btnBack);
-
-        Intent intent = getIntent();
-        String fileUriString = intent.getStringExtra("fileUri");
-        Log.d("MainActivity", "Received URI: " + fileUriString);
-
-        if (fileUriString != null) {
-            Uri fileUri = Uri.parse(fileUriString);
-            if (fileUriString.endsWith(".mp3")) {
-                textViewPlaceholder.setText("Аудіо");
-                setupMediaPlayer(fileUri);
-            } else {
-                textViewPlaceholder.setVisibility(View.GONE);
-                setupVideoPlayer(fileUri);
-            }
-        } else {
-            textViewPlaceholder.setText("Виберіть файл");
-        }
-
-        btnPlay.setOnClickListener(v -> {
-            if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
-                mediaPlayer.start();
-            } else {
-                videoView.start();
-            }
-            Log.d("MainActivity", "Play button clicked");
-        });
-
-        btnPause.setOnClickListener(v -> {
-            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                mediaPlayer.pause();
-            } else {
-                videoView.pause();
-            }
-            Log.d("MainActivity", "Pause button clicked");
-        });
-
-        btnStop.setOnClickListener(v -> {
-            if (mediaPlayer != null) {
-                mediaPlayer.stop();
-                try {
-                    mediaPlayer.prepare();
-                    mediaPlayer.seekTo(0);
-                } catch (Exception e) {
-                    Log.e("MainActivity", "Error resetting MediaPlayer", e);
-                }
-            } else {
-                videoView.stopPlayback();
-                videoView.setVideoURI(Uri.parse(fileUriString));
-            }
-            Log.d("MainActivity", "Stop button clicked");
-        });
-
-        btnBack.setOnClickListener(v -> {
-            Log.d("MainActivity", "Back button clicked");
-            Intent backIntent = new Intent(this, FileChooserActivity.class);
-            backIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(backIntent);
-        });
+        compassImage = findViewById(R.id.compass_image);
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
     }
 
-    private void setupVideoPlayer(Uri fileUri) {
-        videoView.setVideoURI(fileUri);
-        MediaController mediaController = new MediaController(this);
-        mediaController.setAnchorView(videoView);
-        videoView.setMediaController(mediaController);
-        Log.d("MainActivity", "Video URI set");
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
+        sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_GAME);
     }
 
-    private void setupMediaPlayer(Uri fileUri) {
-        mediaPlayer = new MediaPlayer();
-        try {
-            mediaPlayer.setDataSource(this, fileUri);
-            mediaPlayer.prepare();
-            Log.d("MainActivity", "Audio URI set");
-        } catch (Exception e) {
-            Log.e("MainActivity", "Error setting up MediaPlayer", e);
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this, accelerometer);
+        sensorManager.unregisterListener(this, magnetometer);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor == accelerometer) {
+            System.arraycopy(event.values, 0, lastAccelerometer, 0, event.values.length);
+            lastAccelerometerSet = true;
+        } else if (event.sensor == magnetometer) {
+            System.arraycopy(event.values, 0, lastMagnetometer, 0, event.values.length);
+            lastMagnetometerSet = true;
         }
+        if (lastAccelerometerSet && lastMagnetometerSet) {
+            SensorManager.getRotationMatrix(r, null, lastAccelerometer, lastMagnetometer);
+            SensorManager.getOrientation(r, orientation);
+            float azimuthInRadians = orientation[0];
+            float azimuthInDegress = (float)(Math.toDegrees(azimuthInRadians)+360)%360;
+            RotateAnimation ra = new RotateAnimation(
+                    currentDegree,
+                    -azimuthInDegress,
+                    Animation.RELATIVE_TO_SELF, 0.5f,
+                    Animation.RELATIVE_TO_SELF, 0.5f);
+            ra.setDuration(250);
+            ra.setFillAfter(true);
+            compassImage.startAnimation(ra);
+            currentDegree = -azimuthInDegress;
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }
